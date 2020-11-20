@@ -107,32 +107,32 @@ function generateQuestion() {
     <div class="question">
       <legend> ${question}</legend>
     </div>
-    <div class="options">
+    <div class="options2">
       <div class="answers">
         
   <div id="option-container-0">
-    <input type="radio" name="options" id="option1" value="${answr1}" tabindex="1" required=""> 
+    <input type="radio" class='options' name="options" id="option1" value="${answr1}" tabindex="1" required=""> 
     <label for="option1"> ${answr1}</label>
   </div>
 
   <div id="option-container-1">
-    <input type="radio" name="options" id="option2" value="${answr2}" tabindex="2" required=""> 
+    <input type="radio" class='options' name="options" id="option2" value="${answr2}" tabindex="2" required=""> 
     <label for="option2"> ${answr2}</label>
   </div>
 
   <div id="option-container-2">
-    <input type="radio" name="options" id="option3" value="${answr3}" tabindex="3" required=""> 
+    <input type="radio" class='options' name="options" id="option3" value="${answr3}" tabindex="3" required=""> 
     <label for="option3"> ${answr3}</label>
   </div>
 
   <div id="option-container-3">
-    <input type="radio" name="options" id="option4" value="${answr4}" tabindex="4" required=""> 
+    <input type="radio" class='options' name="options" id="option4" value="${answr4}" tabindex="4" required=""> 
     <label for="option4"> ${answr4}</label>
   </div>
 
       </div>
     </div>
-    <button type="submit" id="submit-question-btn" tabindex="5">Submit</button>
+    <button type="submit" id="submit-question-btn" class="" tabindex="5">Submit</button>
     <button type="button" id="next-question-btn" class="hidden" tabindex="6"> Next &gt;&gt;</button>
   </fieldset>
 </form>
@@ -142,27 +142,27 @@ function generateQuestion() {
 
 function renderQuestionPage() {
   const quizPage = generateQuestion()
-  $('main').html(quizPage)
+  $('main').html(quizPage) 
 }
 
-//would like to change this work work with the submit button, commented out above
 function handleAnswerSubmit() {
-  //$('#question-form').submit( event => {
-    //event.preventDefault()
-  //})
-  $('.answers').on('click', 'input', function(event) {
-    const answer = event.currentTarget.value
+  $('.question-form').submit(function(event) {
+    event.preventDefault();
+    $('.options').prop('disabled', true);
+    const option = Array.from(document.getElementsByClassName('options')).filter((c) => c.checked);
+    const answer = option[0].value
     let correctAnswer = store.questions[store.questionNumber].correctAnswer
     if (answer === correctAnswer) {
-      //$('#feedback').html('Hello World'); 
-      //why doesn't the above line of code work?
       store.score++
-      $(".question-form").append(`<h3>${correctAnswer} is the correct answer.  Good Job!</h3>`)
+      $(".answers").append(`<h3>${correctAnswer} is the correct answer.  Good Job!</h3>`)
     } else {
-      $(".question-form").append(`<h3>${correctAnswer} is the correct answer.  Better luck next time!</h3>`)
-    } 
+      $(".answers").append(`<h3>${correctAnswer} is the correct answer.  Better luck next time!</h3>`)
+    }
+    //$('#feedback').html('Hello World'); 
+    //why doesn't the above line of code work? 
     $( "#next-question-btn" ).toggleClass( "hidden");
-  }) 
+    $( "#submit-question-btn" ).toggleClass( "hidden");
+  });
 }
 
 function handleNext() {
@@ -188,8 +188,8 @@ function generateResults() {
         </div>
       </div>
     </fieldset>
-</form>
-</div>`
+  </form>
+  </div>`
 }
 
 function renderResultsPage() {
