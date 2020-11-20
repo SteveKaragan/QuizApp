@@ -64,7 +64,8 @@ const store = {
 
 function generateStart() {
   return `<div class="start">
-  <p>This quiz tests your knowledge of common Brazilian Portuguese words.</p>
+  <img src="./images/brazil-flag-xs.png" alt="Brazilian Flag">
+  <h2>This quiz tests your knowledge of common Brazilian Portuguese words.</h2>
   <button type="button" id="start">Start Quiz</button>
 </div>`
 }
@@ -73,8 +74,6 @@ function renderStartPage() {
   const startPage = generateStart();
   $('main').html(startPage)
 }
-
-
 
 function handleStartQuiz() {
   $('#start').click( function() {
@@ -93,52 +92,48 @@ function generateQuestion() {
   const answr2 = store.questions[store.questionNumber].answers[1]
   const answr3 = store.questions[store.questionNumber].answers[2]
   const answr4 = store.questions[store.questionNumber].answers[3]
-
-  return `<ul class="question-and-score">
-  <li id="question-number">
+  return `
+  <h3>
     Question ${questionNum} of ${numQuestions}
-  </li>
-  <li id="score">
+  </h3>
+  <h3>
     Your score is ${score} correct and ${incorrectScore} incorrect.
-  </li>
-</ul>
-<form id="question-form" class="question-form">
-  <fieldset>
-    <div class="question">
-      <legend> ${question}</legend>
-    </div>
-    <div class="options2">
-      <div class="answers">
-        
-  <div id="option-container-0">
-    <input type="radio" class='options' name="options" id="option1" value="${answr1}" tabindex="1" required=""> 
-    <label for="option1"> ${answr1}</label>
-  </div>
+  </h3>
 
-  <div id="option-container-1">
-    <input type="radio" class='options' name="options" id="option2" value="${answr2}" tabindex="2" required=""> 
-    <label for="option2"> ${answr2}</label>
-  </div>
+  <div class='form'>
+    <form class="question-form">
+      <fieldset>
+        <div class="question">
+          <legend> ${question}</legend>
+        </div>
+        <div class="answers">
+          <div id="option-container-0">
+            <input type="radio" class='options' name="options" id="option1" value="${answr1}" tabindex="1" required=""> 
+            <label for="option1"> ${answr1}</label>
+          </div>
 
-  <div id="option-container-2">
-    <input type="radio" class='options' name="options" id="option3" value="${answr3}" tabindex="3" required=""> 
-    <label for="option3"> ${answr3}</label>
-  </div>
+          <div id="option-container-1">
+            <input type="radio" class='options' name="options" id="option2" value="${answr2}" tabindex="2" required=""> 
+            <label for="option2"> ${answr2}</label>
+          </div>
 
-  <div id="option-container-3">
-    <input type="radio" class='options' name="options" id="option4" value="${answr4}" tabindex="4" required=""> 
-    <label for="option4"> ${answr4}</label>
-  </div>
+          <div id="option-container-2">
+            <input type="radio" class='options' name="options" id="option3" value="${answr3}" tabindex="3" required=""> 
+            <label for="option3"> ${answr3}</label>
+          </div>
 
-      </div>
-    </div>
-    <button type="submit" id="submit-question-btn" class="" tabindex="5">Submit</button>
-    <button type="button" id="next-question-btn" class="hidden" tabindex="6"> Next &gt;&gt;</button>
-  </fieldset>
-</form>
-<div #feedback></div>`
+          <div id="option-container-3">
+            <input type="radio" class='options' name="options" id="option4" value="${answr4}" tabindex="4" required=""> 
+            <label for="option4"> ${answr4}</label>
+          </div>
+        </div>
+        <button type="submit" id="submit-question-btn" tabindex="5">Submit</button>
+        <button type="button" id="next-question-btn" class="hidden" tabindex="6"> Next &gt;&gt;</button>
+      </fieldset>
+    </form>
+    <div #feedback></div>
+  </div>`
 }
-
 
 function renderQuestionPage() {
   const quizPage = generateQuestion()
@@ -147,22 +142,24 @@ function renderQuestionPage() {
 
 function handleAnswerSubmit() {
   $('.question-form').submit(function(event) {
-    event.preventDefault();
-    $('.options').prop('disabled', true);
-    const option = Array.from(document.getElementsByClassName('options')).filter((c) => c.checked);
-    const answer = option[0].value
-    let correctAnswer = store.questions[store.questionNumber].correctAnswer
-    if (answer === correctAnswer) {
-      store.score++
-      $(".answers").append(`<h3>${correctAnswer} is the correct answer.  Good Job!</h3>`)
-    } else {
-      $(".answers").append(`<h3>${correctAnswer} is the correct answer.  Better luck next time!</h3>`)
+  event.preventDefault();
+  renderCorrectAnswer();
+  })
+}
+
+function renderCorrectAnswer() {
+  $('.options').prop('disabled', true);
+  $( "#next-question-btn" ).toggleClass( "hidden");
+  $( "#submit-question-btn" ).toggleClass( "hidden");
+  const option = Array.from(document.getElementsByClassName('options')).filter((c) => c.checked);
+  const answer = option[0].value
+  let correctAnswer = store.questions[store.questionNumber].correctAnswer
+  if (answer === correctAnswer) {
+    store.score++
+    $(".answers").append(`<h4>"${correctAnswer}" is the correct answer.  Good Job!</h4>`)
+  } else {
+    $(".answers").append(`<h4>"${correctAnswer}" is the correct answer.  Better luck next time!</h4>`)
     }
-    //$('#feedback').html('Hello World'); 
-    //why doesn't the above line of code work? 
-    $( "#next-question-btn" ).toggleClass( "hidden");
-    $( "#submit-question-btn" ).toggleClass( "hidden");
-  });
 }
 
 function handleNext() {
@@ -173,22 +170,11 @@ function handleNext() {
 }
 
 function generateResults() {
-  return `<div class="results">
-  <form id="js-restart-quiz">
-    <fieldset>
-      <div class="row">
-        <div class="col-12">
-          <legend>Your Score is: ${store.score}/5</legend>
-        </div>
-      </div>
-    
-      <div class="row">
-        <div class="col-12">
-          <button type="button" id="restart"> Restart Quiz </button>
-        </div>
-      </div>
-    </fieldset>
-  </form>
+  return `
+  <div class="start">
+    <img src="./images/beach.jpg" alt="Ipenema" id="jpg">
+    <h3>Your Score is: ${store.score}/5</h3>
+    <button type="button" id="restart"> Restart Quiz </button>
   </div>`
 }
 
@@ -210,12 +196,13 @@ function renderPage() {
   if (store.questionNumber === 5) {
     renderResultsPage()
     handleRestart()
-  }
+    }
   
   if (!store.quizStarted) {  
     renderStartPage()
     handleStartQuiz()
   }
+
   if (store.quizStarted) {
     renderQuestionPage()
     handleAnswerSubmit()

@@ -10,60 +10,111 @@
   box-sizing: border-box;
 }
 
-
-
 body {
   display: block;
   font-family: "Roboto", sans-serif;
-  color: black;
+  color: #002776;
   margin: 0;
   background: cover;
-  background-image: ;
-  background-color: ;
+  background-image: ; 
+}
+
+header {
+  background-color: #002776;
+  padding: 2px;
+  border: 5px;
+}
+
+h1 {
+  color: #FFDF00;
+  text-align: center;
+}
+
+h2 {
+  margin-top: 25px;
+  text-align: center;
+}
+
+h3 {
+  text-align: center;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding: 2px;
 }
 
 main {
   display: block;
 }
 
-header {
-  padding: 55px 0 0 0;
-  color: ;
-}
-
-.question-and-score {
-  font-size: 20px;
-  font-weight: 600px;
-  color: ;
+.start {
   text-align: center;
-  list-style: none;
 }
 
-li {
-  display: list-item;
-  text-align: -webkit-match-parent;
+img {
+  margin-top: 25px;
+}
+
+button {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFDF00;
+  background-color: #009C3B;
+  padding: 10px 20px;
+}
+
+.form {
+  display: block;
+  margin-top: 1em;
+  text-align: center;
+}
+
+form {
+  font-size: 20px;
+  display: inline-block;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: left;
+}
+
+.answers {
+  margin-left: 1em;
 }
 
 fieldset {
-  display: block;
-  margin-inline-start: 2px;
-  margin-inline-end: 2px;
-  padding-block-start: 0.35em;
-  padding-inline-start: 0.75em;
-  padding-inline-end: 0.75em;
-  padding-block-end: 0.625em;
-  min-inline-size: min-content;
-  border-width: 2px;
-  border-style: groove;
-  border-color: threedface;
-  border-image: initial;
+  padding: 1em;
+  border: 3px solid #002776;
+}
+
+.question-form button {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFDF00;
+  background-color: #009C3B;
+  padding: 5px 20px;
+}
+
+#jpg {
+  width: 45%;
+  height: 45%;
+}
+
+#next-question-btn {
+  float: right;
 }
 
 .hidden {
   visibility: hidden;
 }
 
-form {
-  display: block;
-  margin-top: 0em;
-}
+/* do I need a media query? */
+/* Have I met the A11y requirements */
+
+
+
+
+
+/* This country has 4 colors in their national flag which are North Texas Green  */
+/* (#009C3B), Golden Yellow (#FFDF00), Catalina Blue (#002776) and White (#FFFFFF). */
