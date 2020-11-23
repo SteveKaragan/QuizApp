@@ -88,10 +88,14 @@ function generateQuestion() {
   const score = store.score
   const incorrectScore = store.questionNumber - store.score
   const question = store.questions[store.questionNumber].question
-  const answr1 = store.questions[store.questionNumber].answers[0]
-  const answr2 = store.questions[store.questionNumber].answers[1]
-  const answr3 = store.questions[store.questionNumber].answers[2]
-  const answr4 = store.questions[store.questionNumber].answers[3]
+  const answrs = store.questions[store.questionNumber].answers.map(arg => {
+    return `
+    <div id="option-container-0">
+    <input type="radio" class='options' name="options" id="option1" value="${arg}" tabindex="1" required=""> 
+    <label for="option1"> ${arg}</label>
+    </div>
+   `
+  })
   return `
   <h3>
     Question ${questionNum} of ${numQuestions}
@@ -107,25 +111,7 @@ function generateQuestion() {
           <legend> ${question}</legend>
         </div>
         <div class="answers">
-          <div id="option-container-0">
-            <input type="radio" class='options' name="options" id="option1" value="${answr1}" tabindex="1" required=""> 
-            <label for="option1"> ${answr1}</label>
-          </div>
-
-          <div id="option-container-1">
-            <input type="radio" class='options' name="options" id="option2" value="${answr2}" tabindex="2" required=""> 
-            <label for="option2"> ${answr2}</label>
-          </div>
-
-          <div id="option-container-2">
-            <input type="radio" class='options' name="options" id="option3" value="${answr3}" tabindex="3" required=""> 
-            <label for="option3"> ${answr3}</label>
-          </div>
-
-          <div id="option-container-3">
-            <input type="radio" class='options' name="options" id="option4" value="${answr4}" tabindex="4" required=""> 
-            <label for="option4"> ${answr4}</label>
-          </div>
+          ${answrs.join(" ")}
         </div>
         <button type="submit" id="submit-question-btn" tabindex="5">Submit</button>
         <button type="button" id="next-question-btn" class="hidden" tabindex="6"> Next &gt;&gt;</button>
@@ -143,11 +129,11 @@ function renderQuestionPage() {
 function handleAnswerSubmit() {
   $('.question-form').submit(function(event) {
   event.preventDefault();
-  renderCorrectAnswer();
+  checkCorrectAnswer();
   })
 }
 
-function renderCorrectAnswer() {
+function checkCorrectAnswer() {
   $('.options').prop('disabled', true);
   $( "#next-question-btn" ).toggleClass( "hidden");
   $( "#submit-question-btn" ).toggleClass( "hidden");
@@ -156,7 +142,16 @@ function renderCorrectAnswer() {
   let correctAnswer = store.questions[store.questionNumber].correctAnswer
   if (answer === correctAnswer) {
     store.score++
-    $(".answers").append(`<h4>"${correctAnswer}" is the correct answer.  Good Job!</h4>`)
+    renderCorrectAnswer(true)
+  } else {
+    renderCorrectAnswer(false)
+  }
+}
+
+function renderCorrectAnswer(bool) {
+  let correctAnswer = store.questions[store.questionNumber].correctAnswer
+  if (bool) {  
+  $(".answers").append(`<h4>"${correctAnswer}" is the correct answer.  Good Job!</h4>`)
   } else {
     $(".answers").append(`<h4>"${correctAnswer}" is the correct answer.  Better luck next time!</h4>`)
     }
